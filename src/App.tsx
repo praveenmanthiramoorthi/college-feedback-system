@@ -2,11 +2,13 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/Layout/Layout';
+import LandingPage from './pages/Landing';
 import LoginPage from './pages/Login';
 import AdminDashboard from './pages/Admin/Dashboard';
 import StaffDashboard from './pages/Staff/Dashboard';
 import StudentDashboard from './pages/Student/Dashboard';
 import ParentDashboard from './pages/Parent/Dashboard';
+import { NotificationProvider } from './context/NotificationContext';
 
 // Maps a user role to their home route
 const getRoleHome = (role: string) => {
@@ -14,6 +16,7 @@ const getRoleHome = (role: string) => {
     case 'admin': return '/admin';
     case 'staff':
     case 'hod': return '/staff';
+    case 'student': return '/student';
     case 'parent': return '/parent';
     default: return '/';
   }
@@ -22,12 +25,10 @@ const getRoleHome = (role: string) => {
 const ProtectedRoute: React.FC<{ children: React.ReactNode; roles: string[] }> = ({ children, roles }) => {
   const { user } = useAuth();
 
-  // Not logged in → redirect to the login page for the first allowed role
   if (!user) {
     return <Navigate to={`/login/${roles[0]}`} replace />;
   }
 
-  // Logged in but wrong role → send to their correct home page (prevents loop)
   if (!roles.includes(user.role)) {
     return <Navigate to={getRoleHome(user.role)} replace />;
   }
@@ -38,12 +39,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; roles: string[] }> =
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Student default home */}
-      <Route path="/" element={
-        <ProtectedRoute roles={['student']}>
-          <Layout><StudentDashboard /></Layout>
-        </ProtectedRoute>
-      } />
+      {/* Public Landing Page */}
+      <Route path="/" element={<LandingPage />} />
 
       {/* Admin */}
       <Route path="/admin" element={
@@ -52,7 +49,14 @@ const AppRoutes = () => {
         </ProtectedRoute>
       } />
 
-      {/* Staff + HOD share the same dashboard */}
+      {/* Student */}
+      <Route path="/student" element={
+        <ProtectedRoute roles={['student']}>
+          <Layout><StudentDashboard /></Layout>
+        </ProtectedRoute>
+      } />
+
+      {/* Staff + HOD */}
       <Route path="/staff" element={
         <ProtectedRoute roles={['staff', 'hod']}>
           <Layout><StaffDashboard /></Layout>
@@ -66,16 +70,14 @@ const AppRoutes = () => {
         </ProtectedRoute>
       } />
 
-      {/* Login pages – accessible without auth */}
+      {/* Login pages */}
       <Route path="/login/:role" element={<LoginPage />} />
 
-      {/* Catch-all: send unauthenticated users to student login */}
-      <Route path="*" element={<Navigate to="/login/student" replace />} />
+      {/* Catch-all */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
-
-import { NotificationProvider } from './context/NotificationContext';
 
 function App() {
   return (
