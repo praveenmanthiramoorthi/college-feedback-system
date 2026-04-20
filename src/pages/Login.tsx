@@ -26,13 +26,13 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-            <div className="glass-card animate-fade" style={{ width: '100%', maxWidth: '400px' }}>
+        <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', background: 'var(--background)' }}>
+            <div className="glass-card animate-fade" style={{ width: '100%', maxWidth: '420px', margin: 'auto' }}>
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                     <img 
                         src="/logo.png" 
                         alt="College Logo" 
-                        style={{ width: '100%', maxWidth: '240px', height: 'auto', marginBottom: '1.5rem', borderRadius: '8px' }} 
+                        style={{ width: '100%', maxWidth: '280px', height: 'auto', marginBottom: '1.5rem', borderRadius: '4px' }} 
                     />
                     <div style={{
                         width: 80,

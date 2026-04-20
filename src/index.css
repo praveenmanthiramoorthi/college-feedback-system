@@ -95,21 +95,73 @@ input:focus, select:focus, textarea:focus {
 
 .sidebar {
   width: 280px;
-  background: var(--primary); /* Professional dark sidebar */
+  background: var(--primary);
   color: white;
   padding: 2.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-}
-
-.sidebar h1, .sidebar p {
-  color: white;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
 }
 
 .main-content {
   flex: 1;
   padding: 3rem;
   overflow-y: auto;
+  transition: padding 0.3s;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+  .main-content {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    padding: 1.5rem;
+    padding-top: 5rem; /* Space for mobile header */
+  }
+
+  .glass-card {
+    padding: 1.5rem;
+  }
+
+  .mobile-header {
+    display: flex !important;
+  }
+
+  .md-hidden {
+    display: block !important;
+  }
+}
+
+.mobile-header {
+  display: none;
+}
+
+.md-hidden {
+  display: none;
 }
 
 /* Animations */
