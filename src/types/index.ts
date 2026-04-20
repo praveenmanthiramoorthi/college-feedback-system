@@ -25,6 +25,6 @@ export interface FeedbackResponse {
   id: string;
   feedbackId: string;
   userId: string;
-  responses: Record<string, any>;
+  responses: Record<string, string | number | boolean>;
   submittedAt: string;
 }
